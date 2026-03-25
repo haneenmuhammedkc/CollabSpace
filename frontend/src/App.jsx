@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './User/Landing'
+<<<<<<< HEAD
 import AdminLayout from './Admin/AdminLayout'
 import AdminDashboard from './Admin/AdminDashboard'
 import AdminUsersManagement from './Admin/AdminUsersManagement'
@@ -10,6 +11,9 @@ import AdminTeams from './Admin/AdminTeams'
 import AdminReports from './Admin/AdminReports'
 import AdminNotifications from './Admin/AdminNotifications'
 import AdminSettings from './Admin/AdminSettings'
+=======
+import Community from './User/Community'
+>>>>>>> origin/dev
 
 const App = () => {
   return (
@@ -17,6 +21,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Landing />} />
+<<<<<<< HEAD
           <Route path='/admin' element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path='users' element={<AdminUsersManagement />} />
@@ -27,6 +32,9 @@ const App = () => {
             <Route path='notifications' element={<AdminNotifications />} />
             <Route path='settings' element={<AdminSettings />} />
           </Route>
+=======
+          <Route path='/communities' element={<Community />} />
+>>>>>>> origin/dev
         </Routes>
       </BrowserRouter>
     </div>
