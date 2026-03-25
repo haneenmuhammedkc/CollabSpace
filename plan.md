@@ -6,8 +6,12 @@
 **Description:** A developer community and collaboration platform where developers can join specific hubs, post open-source project ideas, pitch to peers, and build teams to bring ideas to life.
 
 ## 2. Global UI/UX Guidelines
-*   **Theme:** Clean, minimalist **Light Theme**.
-*   **Color Palette:** Strictly White backgrounds/surfaces with a Blue primary color palette (for buttons, accents, active states, links, and branding).
+*   **Theme:** Soft, muted earthy pastel theme.
+*   **Color Palette:**
+    *   **Background:** `#F1F0E8`
+    *   **Surface/Accent:** `#E5E1DA`
+    *   **Secondary:** `#B3C8CF`
+    *   **Primary Action/Branding:** `#89A8B2`
 *   **Typography:** Professional, clean sans-serif fonts (e.g., *Inter*, *Roboto*, or system UI fonts like *San Francisco*/*Segoe UI*) to maintain a mature developer aesthetic.
 *   **Navigation:** Top or side navigation bar consistently available across all authenticated pages.
 *   **Responsiveness:** Mobile-first approach, fully responsive for tablets and desktops.
@@ -18,10 +22,18 @@
 ### 3.1. Public / Unauthenticated Pages
 
 **Landing Page (`/`)**
-*   **Hero Section:** Catchy headline, brief subtext, and clear Call to Action (CTA) buttons: "Join the Community" & "Explore Projects" (Blue buttons on white).
-*   **Features Section:** Clean cards highlighting key features (Join Communities, Pitch Open-Source Ideas, Build Teams).
-*   **Recent/Trending Projects:** A grid showing 3-4 active/trending open-source project ideas.
-*   **Footer:** Links to About, Contact, GitHub repo, etc.
+*   **Global Layout:** Seamless integration with standard `Navbar` (glassmorphism, center links with animated active states) and `Footer` resting on `#E5E1DA` background.
+*   **Hero Section:**
+    *   **Background:** Floating, animated developer symbols (`<>`, `{ }`, `</>`, `#`) set against soft glowing pastel orbs (`#B3C8CF`, `#E5E1DA`, `#89A8B2`) with slow pulsing and drift animations.
+    *   **Headline:** "Code Alone, Build Together." utilizing dynamic, slow-transitioning gradients triggered on hover.
+    *   **CTAs:** "Join the Community" (Premium `#89A8B2` rounded button with drop shadow lift) & "Explore Projects" (Glassy surface button with pinging accent dots).
+*   **Features Section:**
+    *   "Everything you need to collaborate" layout mounted on an `#E5E1DA` surface with a custom grainy noise texture overlay.
+    *   Cards appear as floating tiles featuring customized SVG wrapper gradients and a radial glowing gradient transition on hover.
+*   **Trending Projects Section:**
+    *   Grid of open-source ideas showcasing project detail cards.
+    *   Cards display "Open" status badges with active, pulsing `#89A8B2` notification dots.
+    *   Hovering over cards reveals a subtle background gradient and colorizes skill tags into solid branded buttons.
 
 **Authentication Pages**
 *   **Sign Up (`/signup`):** Minimalist form with Full Name, Email, Password. Options to "Sign up with GitHub/Google" (OAuth).
