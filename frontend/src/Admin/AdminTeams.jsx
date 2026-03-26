@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconUsers } from './Icons';
+import React from 'react'
+import { IconUsers } from '../AdminComponents/AdminSidebarIcons'
 
 export default function AdminTeams() {
   const teams = [

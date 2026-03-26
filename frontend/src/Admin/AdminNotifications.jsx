@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconBell, IconProjects, IconUsers } from './Icons';
+import React from 'react'
+import { IconBell, IconProjects, IconUsers } from '../AdminComponents/AdminSidebarIcons'
 
 export default function AdminNotifications() {
   const notifications = [

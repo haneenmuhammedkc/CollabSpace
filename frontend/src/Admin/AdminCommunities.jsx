@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconTrash } from './Icons';
+import React from 'react'
+import { IconTrash } from '../AdminComponents/AdminSidebarIcons'
 
 export default function AdminCommunities() {
   const communities = [

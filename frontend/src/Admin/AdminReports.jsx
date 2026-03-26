@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconReports } from './Icons';
+import React from 'react'
+import { IconReports } from '../AdminComponents/AdminSidebarIcons'
 
 export default function AdminReports() {
   return (
@@ -22,7 +22,7 @@ export default function AdminReports() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
           <h3 className="text-lg font-bold text-slate-900 mb-6">User Acquisition</h3>
-          <div className="h-[250px] flex items-end gap-3 sm:gap-6 pb-6 pl-8 border-b border-l border-slate-200 relative">
+          <div className="h-62.5 flex items-end gap-3 sm:gap-6 pb-6 pl-8 border-b border-l border-slate-200 relative">
             <div className="absolute -left-7 top-0 bottom-6 flex flex-col justify-between text-xs text-slate-400 font-medium">
               <span>200</span><span>150</span><span>100</span><span>50</span><span>0</span>
             </div>
@@ -31,7 +31,7 @@ export default function AdminReports() {
             </div>
             {[60, 40, 80, 50, 90, 100, 70].map((h, i) => (
               <div className="flex-1 flex items-end justify-center gap-1 sm:gap-2 h-full relative group" key={i}>
-                <div className="w-full max-w-[32px] bg-blue-600 rounded-t-sm transition-all duration-300 group-hover:brightness-110" style={{ height: `${h}%` }}></div>
+                <div className="w-full max-w-8 bg-blue-600 rounded-t-sm transition-all duration-300 group-hover:brightness-110" style={{ height: `${h}%` }}></div>
               </div>
             ))}
           </div>
