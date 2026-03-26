@@ -16,8 +16,8 @@ import Contact from './User/Contact'
 import Team from './User/Team'
 import Privacy from './User/Privacy'
 import Terms from './User/Terms'
-import Login from './User/Login'
-import Signup from './User/Signup'
+import UserLogin from './User/UserLogin'
+import Signup from './User/UserSignup'
 
 import AdminLayout from './AdminComponents/AdminSidebar'
 import AdminDashboard from './Admin/AdminDashboard'
@@ -52,7 +52,7 @@ const App = () => {
           <Route path='/team' element={<Team />} />
           <Route path='/privacy' element={<Privacy />} />
           <Route path='/terms' element={<Terms />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<UserLogin />} />
           <Route path='/signup' element={<Signup />} />
 
           <Route path='/admin' element={<AdminLayout />}>

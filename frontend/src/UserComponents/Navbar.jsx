@@ -55,7 +55,7 @@ export default function Navbar() {
             <NavLink href="/">Home</NavLink>
             <NavLink href="/communities">Communities</NavLink>
             <NavLink href="/projects">Projects</NavLink>
-            <NavLink href="/teams">Teams</NavLink>
+            <NavLink href="/team">Teams</NavLink>
             <NavLink href="/dashboard">Dashboard</NavLink>
           </div>
 
