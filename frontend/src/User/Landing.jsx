@@ -208,10 +208,10 @@ const GlobalStyles = () => (
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-[#F1F0E8] font-sans text-slate-800 selection:bg-[#B3C8CF]/50 selection:text-[#384a51] overflow-x-hidden pt-16 transition-colors duration-500">
+    <div className="min-h-screen flex flex-col bg-[#F1F0E8] font-sans text-slate-800 selection:bg-[#B3C8CF]/50 selection:text-[#384a51] overflow-x-hidden pt-16 transition-colors duration-500">
       <GlobalStyles />
       <Navbar />
-      <main>
+      <main className="flex-1">
         <Hero />
         <Features />
         <TrendingProjects />
