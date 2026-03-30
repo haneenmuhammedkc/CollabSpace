@@ -1,8 +1,8 @@
-import React from 'react';
-import Navbar from '../UserComponents/Navbar';
-import Footer from '../UserComponents/Footer';
+import React from 'react'
+import Navbar from './Navbar'
+import Footer from './Footer'
 
-export default function Terms() {
+const Terms = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#F1F0E8] font-sans text-slate-800 pt-20 transition-colors duration-500">
       <Navbar />
@@ -52,5 +52,7 @@ export default function Terms() {
 
       <Footer />
     </div>
-  );
+  )
 }
+
+export default Terms

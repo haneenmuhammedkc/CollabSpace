@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import Navbar from '../UserComponents/Navbar';
-import Footer from '../UserComponents/Footer';
+import React, { useState } from 'react'
+import Navbar from './Navbar'
+import Footer from './Footer'
 
-export default function Contact() {
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+const Contact = () => {
+  const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitting(true);
+    e.preventDefault()
+    setSubmitting(true)
     setTimeout(() => {
-      setSubmitting(false);
-      setSubmitted(true);
-    }, 1500);
-  };
+      setSubmitting(false)
+      setSubmitted(true)
+    }, 1500)
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F1F0E8] font-sans text-slate-800 pt-20 transition-colors duration-500">
@@ -52,7 +52,7 @@ export default function Contact() {
         </div>
 
         {/* Contact Form */}
-        <div className="bg-[#E5E1DA] rounded-[2rem] p-8 md:p-12 border border-[#B3C8CF]/40 shadow-sm relative overflow-hidden">
+        <div className="bg-[#E5E1DA] rounded-4xl p-8 md:p-12 border border-[#B3C8CF]/40 shadow-sm relative overflow-hidden">
           <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-[#B3C8CF]/20 rounded-full blur-3xl pointer-events-none z-0"></div>
           
           <div className="relative z-10">
@@ -103,5 +103,7 @@ export default function Contact() {
 
       <Footer />
     </div>
-  );
+  )
 }
+
+export default Contact

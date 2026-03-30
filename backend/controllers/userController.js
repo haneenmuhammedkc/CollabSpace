@@ -38,13 +38,58 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Invalid Credentials" })
         }
 
-        console.log("JWT SECRET:", process.env.JWT_SECRET);
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" })
         
         res.status(200).json({ message: "Login Successfull", token, user })
     }
     catch(error){
-        console.log("🔥 LOGIN ERROR FULL:", error)
+        console.log("LOGIN ERROR FULL:", error)
         res.status(500).json({ message: "Server error" })
     }
+}
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const userId = req.user._id
+    const { name, username, about, skills, github, website, linkedin } = req.body
+    const user = await userModel.findById(userId)
+
+    if(!user){
+      return res.status(404).json({ message: "User not found" })
+    }
+
+    if(name && name.trim().length === 0){
+      return res.status(400).json({ message: "Name cannot be empty" })
+    }
+
+    if(skills && !Array.isArray(skills)){
+      return res.status(400).json({ message: "Skills must be an array" })
+    }
+
+    if (name) user.name = name.trim()
+    if (about !== undefined) user.about = about.trim()
+    if (skills) user.skills = skills
+    if (github !== undefined) user.github = github.trim()
+    if (website !== undefined) user.website = website.trim()
+    if (linkedin !== undefined) user.linkedin = linkedin.trim()
+    await user.save()
+
+    const updatedUser = {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      username: user.username,
+      about: user.about,
+      skills: user.skills,
+      role: user.role,
+      github: user.github,
+      website: user.website,
+      linkedin: user.linkedin,
+    }
+    res.status(200).json(updatedUser)
+  }
+  catch(error){
+    console.error("Update Profile Error:", error)
+    res.status(500).json({ message: error.message })
+  }
 }

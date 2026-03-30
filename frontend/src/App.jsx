@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './User/Landing'
 import Community from './User/Community'
 import UserDashboard from './User/UserDashboard'
-import UserProfile from './User/UserProfile'
+import Profile from './User/Profile'
 import UserSettings from './User/UserSettings'
 import CommunityDetail from './User/CommunityDetail'
 import ProjectsBoard from './User/ProjectsBoard'
@@ -11,11 +11,11 @@ import ProjectDetail from './User/ProjectDetail'
 import ProjectCreate from './User/ProjectCreate'
 import UserWorkspace from './User/UserWorkspace'
 import ApplicationManagement from './User/ApplicationManagement'
-import About from './User/About'
-import Contact from './User/Contact'
+import About from './UserComponents/About'
+import Contact from './UserComponents/Contact'
 import Team from './User/Team'
-import Privacy from './User/Privacy'
-import Terms from './User/Terms'
+import Privacy from './UserComponents/Privacy'
+import Terms from './UserComponents/Terms'
 import UserLogin from './User/UserLogin'
 import Signup from './User/UserSignup'
 
@@ -28,6 +28,7 @@ import AdminTeams from './Admin/AdminTeams'
 import AdminReports from './Admin/AdminReports'
 import AdminNotifications from './Admin/AdminNotifications'
 import AdminSettings from './Admin/AdminSettings'
+import EditProfile from './User/EditProfile'
 
 
 const App = () => {
@@ -40,7 +41,8 @@ const App = () => {
           <Route path='/communities' element={<Community />} />
           <Route path='/communities/:id' element={<CommunityDetail />} />
           <Route path='/dashboard' element={<UserDashboard />} />
-          <Route path='/profile/:username' element={<UserProfile />} />
+          <Route path='/profile/:username' element={<Profile />} />
+          <Route path='/edit-profile' element={<EditProfile />} />
           <Route path='/settings' element={<UserSettings />} />
           <Route path='/projects' element={<ProjectsBoard />} />
           <Route path='/projects/create' element={<ProjectCreate />} />
