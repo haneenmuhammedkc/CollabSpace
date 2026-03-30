@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from "react";
-import Navbar from "../UserComponents/Navbar";
-import Footer from "../UserComponents/Footer";
-import { useNavigate } from "react-router-dom";
-import { FiEdit } from "react-icons/fi";
+import React, { useState, useEffect } from "react"
+import Navbar from "../UserComponents/Navbar"
+import Footer from "../UserComponents/Footer"
+import { useNavigate } from "react-router-dom"
 
 const Profile = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [activeTab, setActiveTab] = useState("created");
+  const navigate = useNavigate()
+  const [user, setUser] = useState(null)
+  const [activeTab, setActiveTab] = useState("created")
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = localStorage.getItem("user")
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser))
     }
-  }, []);
+  }, [])
 
   const loggedInUser = JSON.parse(localStorage.getItem("user"))
 
@@ -36,7 +35,7 @@ const Profile = () => {
       tags: ["D3.js", "TypeScript"],
       date: "May 2026",
     },
-  ];
+  ]
 
   const joinedProjects = [
     {
@@ -45,52 +44,86 @@ const Profile = () => {
       tags: ["Python", "LLM"],
       date: "Sep 2026",
     },
-  ];
+  ]
 
   const communities = [
     "Frontend Wizards",
     "Open Source Contribs",
     "D3 Enthusiasts",
-  ];
+  ]
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F1F0E8] font-sans text-slate-800 pt-20 transition-colors duration-500">
       <Navbar />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-8 py-10">
+
         {/* Cover & Profile Header */}
         <div className="bg-[#E5E1DA] rounded-3xl border border-[#B3C8CF]/40 shadow-sm overflow-hidden mb-8">
-          <div className="h-48 md:h-64 bg-linear-to-r from-[#89A8B2] to-[#B3C8CF] relative">
-            <div className="absolute inset-0 bg-[#F1F0E8]/10 mix-blend-overlay"></div>
-          </div>
+
+          {/* Cover Image */}
+          <div className="h-48 md:h-64 relative">
+  {user?.cover ? (
+    <img
+      src={user.cover}
+      alt="cover"
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-full bg-gradient-to-r from-[#89A8B2] to-[#B3C8CF]" />
+  )}
+
+  <div className="absolute inset-0 bg-[#F1F0E8]/10 mix-blend-overlay"></div>
+</div>
 
           <div className="px-6 md:px-10 pb-8 relative">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-6">
               <div className="flex items-end gap-6 -mt-16 md:-mt-20">
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl p-1.5 shadow-lg border border-[#B3C8CF]/30 relative z-10 shrink-0">
-                  <div className="w-full h-full bg-[#89A8B2] rounded-2xl flex items-center justify-center text-4xl font-bold text-white shadow-inner">
-                    A
+
+                {/* Profile Image */}
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl p-1.5 shadow-lg border border-[#B3C8CF]/30
+                  relative z-10 shrink-0">
+                  <div className="w-full h-full bg-[#89A8B2] rounded-2xl flex items-center justify-center text-4xl font-bold
+                    text-white shadow-inner">
+                    {user?.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt="avatar"
+                          className="w-full h-full object-cover rounded-2xl"
+                        />
+                      ) : (
+                        user?.name?.charAt(0).toUpperCase()
+                      )}
                   </div>
                 </div>
+
+                {/* Name, Role */}
                 <div className="pb-2 md:pb-4">
                   <div className="flex items-center gap-4 flex-wrap">
                     <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight leading-tight">
                       {user?.name || "User Name"}
                     </h1>
 
-                    {loggedInUser?._id === user?._id && (
-                      <button onClick={() => navigate("/edit-profile")}>
-                        <FiEdit className="text-black/20 text-2xl cursor-pointer hover:scale-105 transition duration-500" />
-                      </button>
-                    )}
                   </div>
                   <p className="text-slate-600 font-semibold text-md"> Developer </p>
                 </div>
+
               </div>
+
+              {/* Settings / Message Buttons */}
               <div className="mt-6 md:mt-0 pb-4">
-                <button className="bg-[#89A8B2] text-white px-6 py-2.5 rounded-xl font-bold shadow-sm hover:shadow-md hover:bg-[#7896a0] hover:-translate-y-0.5 transition active:scale-95 text-sm sm:text-base w-full md:w-auto">
-                  Message
-                </button>
+                {loggedInUser?._id === user?._id ? (
+                  <button onClick={() => navigate("/settings")}
+                    className="bg-[#B3C8CF] text-white px-6 py-2.5 rounded-xl font-bold shadow-sm hover:bg-[#89A8B2]
+                    hover:-translate-y-0.5 transition active:scale-95 text-sm sm:text-base w-full md:w-auto cursor-pointer">
+                    Settings
+                  </button>
+                ) : (
+                  <button className="bg-[#89A8B2] text-white px-6 py-2.5 rounded-xl font-bold shadow-sm hover:shadow-md cursor-pointer
+                    hover:bg-[#7896a0] hover:-translate-y-0.5 transition active:scale-95 text-sm sm:text-base w-full md:w-auto">
+                    Message
+                  </button>
+                )}
               </div>
             </div>
 
@@ -303,7 +336,7 @@ const Profile = () => {
 
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

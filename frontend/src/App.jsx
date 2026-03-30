@@ -28,7 +28,6 @@ import AdminTeams from './Admin/AdminTeams'
 import AdminReports from './Admin/AdminReports'
 import AdminNotifications from './Admin/AdminNotifications'
 import AdminSettings from './Admin/AdminSettings'
-import EditProfile from './User/EditProfile'
 
 
 const App = () => {
@@ -42,7 +41,6 @@ const App = () => {
           <Route path='/communities/:id' element={<CommunityDetail />} />
           <Route path='/dashboard' element={<UserDashboard />} />
           <Route path='/profile/:username' element={<Profile />} />
-          <Route path='/edit-profile' element={<EditProfile />} />
           <Route path='/settings' element={<UserSettings />} />
           <Route path='/projects' element={<ProjectsBoard />} />
           <Route path='/projects/create' element={<ProjectCreate />} />
