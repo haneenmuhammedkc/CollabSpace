@@ -145,7 +145,7 @@ const UserSettings = () => {
       // 🔥 Call backend to remove avatar
       const res = await axios.put(
         "http://localhost:5000/users/update",
-        { avatar: "" },   // 👈 IMPORTANT
+        { avatar: "" },
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -175,6 +175,21 @@ const UserSettings = () => {
     }
   }
 
+  const handleLogout = () => {
+    const confirmLogout = window.confirm("Are you sure you want to logout?")
+    if (!confirmLogout) return
+
+    // 🔥 Clear everything
+    localStorage.removeItem("token")
+    localStorage.removeItem("user")
+
+    // Optional: clear state
+    setUser(null)
+
+    // 🔥 Redirect to login
+    navigate("/login")
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F1F0E8] font-sans text-slate-800 pt-20 transition-colors duration-500">
       <Navbar />
@@ -201,6 +216,12 @@ const UserSettings = () => {
                   {tab.label}
                 </button>
               ))}
+              <div className="border-t border-[#B3C8CF]/30 my-2"></div>
+
+              <button onClick={handleLogout} className="text-left px-4 py-3 rounded-2xl font-semibold text-rose-500
+                hover:bg-rose-50 transition-all duration-300 cursor-pointer">
+                Logout
+              </button>
             </nav>
           </div>
         </aside>

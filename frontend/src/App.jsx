@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './User/Landing'
 import Community from './User/Community'
+import CreateCommunity from './User/CreateCommunity'
 import UserDashboard from './User/UserDashboard'
 import Profile from './User/Profile'
 import UserSettings from './User/UserSettings'
@@ -29,7 +30,6 @@ import AdminReports from './Admin/AdminReports'
 import AdminNotifications from './Admin/AdminNotifications'
 import AdminSettings from './Admin/AdminSettings'
 
-
 const App = () => {
   return (
     <div>
@@ -38,6 +38,7 @@ const App = () => {
 
           <Route path='/' element={<Landing />} />
           <Route path='/communities' element={<Community />} />
+          <Route path='/communities/create' element={<CreateCommunity />} />
           <Route path='/communities/:id' element={<CommunityDetail />} />
           <Route path='/dashboard' element={<UserDashboard />} />
           <Route path='/profile/:username' element={<Profile />} />

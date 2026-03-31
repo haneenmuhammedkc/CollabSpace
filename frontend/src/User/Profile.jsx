@@ -70,7 +70,7 @@ const Profile = () => {
       className="w-full h-full object-cover"
     />
   ) : (
-    <div className="w-full h-full bg-gradient-to-r from-[#89A8B2] to-[#B3C8CF]" />
+    <div className="w-full h-full bg-linear-to-r from-[#89A8B2] to-[#B3C8CF]" />
   )}
 
   <div className="absolute inset-0 bg-[#F1F0E8]/10 mix-blend-overlay"></div>
