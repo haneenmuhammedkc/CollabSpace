@@ -6,8 +6,11 @@ import axios from "axios"
 
 const CommunityDetail = () => {
   const { id } = useParams()
+
+  const [posts, setPosts] = useState([])
   const [community, setCommunity] = useState(null)
   const [activeTab, setActiveTab] = useState("feed")
+  const [postContent, setPostContent] = useState("")
 
   useEffect(() => {
     const fetchCommunity = async () => {
@@ -18,7 +21,18 @@ const CommunityDetail = () => {
         console.log(error)
       }
     }
+
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/posts/${id}`)
+        setPosts(res.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     fetchCommunity()
+    fetchPosts()
   }, [id])
 
   const handleJoin = async () => {
@@ -36,6 +50,33 @@ const CommunityDetail = () => {
       setCommunity(res.data)
     }
     catch(error){
+      console.log(error)
+    }
+  }
+
+  const handleCreatePost = async () => {
+    try {
+      const token = localStorage.getItem("token")
+
+      const res = await axios.post(
+        `http://localhost:5000/posts`,
+        {
+          content: postContent,
+          communityId: id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      // Add new post to UI instantly
+      setPosts((prev) => [res.data, ...prev])
+
+      // Clear input
+      setPostContent("")
+    } catch (error) {
       console.log(error)
     }
   }
@@ -110,13 +151,13 @@ const CommunityDetail = () => {
           {/* Tabs */}
           <div className="flex px-4 md:px-10 gap-8 overflow-x-auto scrollbar-none bg-[#E5E1DA]">
             <button onClick={() => setActiveTab("feed")} className={`py-5 font-bold text-base whitespace-nowrap border-b-4 transition-colors
-            ${activeTab === "feed" ? "border-[#89A8B2] text-[#89A8B2]" : "border-transparenttext-slate-500 hover:text-slate-700"}`}
-            duration-300 >
+            ${activeTab === "feed" ? "border-[#89A8B2] text-[#89A8B2]" : "border-transparent text-slate-500 hover:text-slate-700"}
+            duration-300`} >
               Activity Feed
             </button>
             <button onClick={() => setActiveTab("members")} className={`py-5 font-bold text-base whitespace-nowrap border-b-4
-             ${activeTab === "members" ? "border-[#89A8B2] text-[#89A8B2]" : "border-transparent text-slate-500 hover:text-slate-700"}`}
-            transition-colors duration-300 >
+             ${activeTab === "members" ? "border-[#89A8B2] text-[#89A8B2]" : "border-transparent text-slate-500 hover:text-slate-700"}
+            transition-colors duration-300`} >
               Members Directory
             </button>
           </div>
@@ -134,7 +175,7 @@ const CommunityDetail = () => {
                     A
                   </div>
                   <div className="flex-1">
-                    <textarea
+                    <textarea value={postContent} onChange={(e) => setPostContent(e.target.value)}
                       placeholder="Share an insight, question, or project pitch with the community..."
                       rows="3"
                       className="w-full px-4 py-3 bg-[#F1F0E8] border-2 border-transparent rounded-xl text-slate-800 focus:outline-none focus:ring-4 focus:ring-[#89A8B2]/20 focus:border-[#89A8B2] transition font-medium resize-none mb-3"
@@ -172,7 +213,7 @@ const CommunityDetail = () => {
                           </svg>
                         </button>
                       </div>
-                      <button className="bg-[#89A8B2] text-white px-6 py-2 rounded-xl font-bold shadow-sm hover:bg-[#7896a0] transition">
+                      <button onClick={handleCreatePost} className="bg-[#89A8B2] text-white px-6 py-2 rounded-xl font-bold shadow-sm hover:bg-[#7896a0] transition">
                         Post
                       </button>
                     </div>
@@ -180,9 +221,9 @@ const CommunityDetail = () => {
                 </div>
 
                 {/* Posts */}
-                {[1, 2, 3].map((i) => (
+                {posts.map((post) => (
                   <div
-                    key={i}
+                    key={post._id}
                     className="bg-[#E5E1DA] p-6 rounded-3xl border border-[#B3C8CF]/30 shadow-sm hover:border-[#89A8B2] transition duration-300"
                   >
                     <div className="flex items-center gap-4 mb-4">
@@ -191,9 +232,9 @@ const CommunityDetail = () => {
                       </div>
                       <div>
                         <h4 className="font-bold text-slate-800">
-                          David G.{" "}
+                          {post.author?.name}
                           <span className="text-slate-400 font-medium ml-2 text-sm">
-                            2 hours ago
+                            {new Date(post.createdAt).toLocaleString()}
                           </span>
                         </h4>
                         <p className="text-xs text-slate-500 font-medium">
@@ -202,13 +243,10 @@ const CommunityDetail = () => {
                       </div>
                     </div>
                     <h3 className="text-xl font-bold text-slate-800 mb-2">
-                      CSS Grid vs Flexbox for complex Dashboards
+                      {post.title || "Post"}
                     </h3>
                     <p className="text-slate-600 mb-4 leading-relaxed">
-                      I've been noticing a lot of discussions lately about
-                      layout performance. Does anyone have benchmarks on pure
-                      CSS Grid vs Nested Flexbox when you have upwards of 500
-                      DOM nodes in a data-heavy dashboard view?
+                      {post.content}
                     </p>
                     <div className="flex gap-6 border-t border-[#B3C8CF]/30 pt-4">
                       <button className="flex items-center gap-2 text-slate-500 hover:text-[#89A8B2] font-semibold text-sm transition">
