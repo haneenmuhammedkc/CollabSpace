@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './User/Landing'
 import Community from './User/Community'
+import CreateCommunity from './User/CreateCommunity'
 import UserDashboard from './User/UserDashboard'
 import Profile from './User/Profile'
 import UserSettings from './User/UserSettings'
@@ -28,8 +29,6 @@ import AdminTeams from './Admin/AdminTeams'
 import AdminReports from './Admin/AdminReports'
 import AdminNotifications from './Admin/AdminNotifications'
 import AdminSettings from './Admin/AdminSettings'
-import EditProfile from './User/EditProfile'
-
 
 const App = () => {
   return (
@@ -39,10 +38,10 @@ const App = () => {
 
           <Route path='/' element={<Landing />} />
           <Route path='/communities' element={<Community />} />
+          <Route path='/communities/create' element={<CreateCommunity />} />
           <Route path='/communities/:id' element={<CommunityDetail />} />
           <Route path='/dashboard' element={<UserDashboard />} />
           <Route path='/profile/:username' element={<Profile />} />
-          <Route path='/edit-profile' element={<EditProfile />} />
           <Route path='/settings' element={<UserSettings />} />
           <Route path='/projects' element={<ProjectsBoard />} />
           <Route path='/projects/create' element={<ProjectCreate />} />

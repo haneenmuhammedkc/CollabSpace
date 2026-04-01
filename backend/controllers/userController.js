@@ -51,7 +51,7 @@ export const loginUser = async (req, res) => {
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.user._id
-    const { name, username, about, skills, github, website, linkedin } = req.body
+    const { name, username, about, skills, github, website, linkedin, avatar, cover } = req.body
     const user = await userModel.findById(userId)
 
     if(!user){
@@ -72,6 +72,8 @@ export const updateUserProfile = async (req, res) => {
     if (github !== undefined) user.github = github.trim()
     if (website !== undefined) user.website = website.trim()
     if (linkedin !== undefined) user.linkedin = linkedin.trim()
+    if (avatar !== undefined) user.avatar = avatar
+    if (cover !== undefined) user.cover = cover
     await user.save()
 
     const updatedUser = {
@@ -85,6 +87,8 @@ export const updateUserProfile = async (req, res) => {
       github: user.github,
       website: user.website,
       linkedin: user.linkedin,
+      avatar: user.avatar,
+      cover: user.cover
     }
     res.status(200).json(updatedUser)
   }
