@@ -164,7 +164,7 @@ export default function ProjectDetail() {
 
       {isApplyModalOpen && (
         <div className="fixed inset-0 bg-[#F1F0E8]/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#E5E1DA] w-full max-w-lg rounded-[2rem] border border-[#B3C8CF]/50 shadow-2xl overflow-hidden">
+          <div className="bg-[#E5E1DA] w-full max-w-lg rounded-4xl border border-[#B3C8CF]/50 shadow-2xl overflow-hidden">
             <div className="p-8 border-b border-[#B3C8CF]/30 bg-[#F1F0E8]/50 flex justify-between items-start">
                <div>
                   <h2 className="text-2xl font-bold text-slate-800 mb-1">Apply to Join</h2>
