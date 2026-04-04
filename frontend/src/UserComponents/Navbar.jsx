@@ -82,7 +82,17 @@ export default function Navbar() {
                 className="flex items-center gap-3 group"
               >
                 <div className="w-10 h-10 bg-[#89A8B2] rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:scale-105 transition">
-                  {user.name?.charAt(0).toUpperCase()}
+                  {user.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt="avatar"
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                  ) : (
+                    <div className="w-full h-full rounded-xl bg-[#89A8B2] flex items-center justify-center text-white font-bold text-lg">
+                      {user.name?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                 </div>
               </a>
             ) : (
