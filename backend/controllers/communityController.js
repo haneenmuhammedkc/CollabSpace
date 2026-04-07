@@ -9,16 +9,17 @@ export const getAllCommunities = async (req, res) => {
     res.status(200).json(communities)
   }
   catch(error){
-  console.error(error)
-  res.status(500).json({ message: error.message })
-}
+    console.error(error)
+    res.status(500).json({ message: error.message })
+  }
 }
 
 export const getSingleCommunity = async (req, res) => {
   try {
     const { id } = req.params
     const community = await communityModel.findById(id)
-      .populate("members", "name")
+      .populate("members", "name email")
+      .populate("createdBy", "name")
 
     if(!community){
       return res.status(404).json({ message: "Community not found" })
@@ -26,9 +27,22 @@ export const getSingleCommunity = async (req, res) => {
     res.status(200).json(community)
   }
   catch(error){
-  console.error(error)
-  res.status(500).json({ message: error.message })
+    console.error(error)
+    res.status(500).json({ message: error.message })
+  }
 }
+
+export const getUserCommunities = async (req, res) => {
+  try {
+    const { id } = req.params
+    const communities = await communityModel
+      .find({ members: id })
+      .select("name coverImage")
+
+    res.status(200).json(communities);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 export const createCommunity = async (req, res) => {
@@ -39,9 +53,9 @@ export const createCommunity = async (req, res) => {
     res.status(201).json(newCommunity)
   }
   catch(error){
-  console.error(error)
-  res.status(500).json({ message: error.message })
-}
+    console.error(error)
+    res.status(500).json({ message: error.message })
+  }
 }
 
 export const joinCommunity = async (req, res) => {
@@ -60,9 +74,9 @@ export const joinCommunity = async (req, res) => {
     res.status(200).json({ message: "Joined community" })
   }
   catch(error){
-  console.error(error)
-  res.status(500).json({ message: error.message })
-}
+    console.error(error)
+    res.status(500).json({ message: error.message })
+  }
 }
 
 export const leaveCommunity = async (req, res) => {
