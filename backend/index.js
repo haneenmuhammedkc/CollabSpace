@@ -19,7 +19,7 @@ app.use(cors())
 
 app.use("/users", userRoutes)
 
-app.use("/api/projects", projectRoutes)
+app.use("/projects", projectRoutes)
 app.use("/posts", postRoutes)
 app.use("/comments", commentRoutes)
 app.use("/communities", communityRoutes)

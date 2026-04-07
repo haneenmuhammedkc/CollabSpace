@@ -6,6 +6,8 @@ import {
   applyToProject,
   acceptApplication,
   rejectApplication,
+  updateProject,
+  deleteProject,
 } from "../controllers/projectController.js";
 
 import { authMiddleware } from '../middleware/authMiddleware.js'
@@ -15,6 +17,9 @@ const router = express.Router();
 router.post("/", authMiddleware, createProject);
 router.get("/", getAllProjects);
 router.get("/:id", getProjectById);
+
+router.put("/:id", authMiddleware, updateProject);
+router.delete("/:id", authMiddleware, deleteProject);
 
 router.post("/:id/apply", authMiddleware, applyToProject);
 

@@ -4,18 +4,19 @@ import Footer from '../UserComponents/Footer';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export default function ProjectsBoard() {
+const ProjectsBoard = () => {
+  
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('All');
 
-  // 🟢 STATE FOR PROJECTS
+  // STATE FOR PROJECTS
   const [projects, setProjects] = useState([]);
 
-  // 🟢 FETCH PROJECTS FROM BACKEND
+  // FETCH PROJECTS FROM BACKEND
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/projects");
+        const res = await axios.get("http://localhost:5000/projects");
         setProjects(res.data);
       } catch (err) {
         console.log(err);
@@ -159,3 +160,5 @@ export default function ProjectsBoard() {
     </div>
   );
 }
+
+export default ProjectsBoard;

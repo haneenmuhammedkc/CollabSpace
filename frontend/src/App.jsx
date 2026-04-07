@@ -45,6 +45,7 @@ const App = () => {
           <Route path='/settings' element={<UserSettings />} />
           <Route path='/projects' element={<ProjectsBoard />} />
           <Route path='/projects/create' element={<ProjectCreate />} />
+          <Route path="/projects/edit/:id" element={<ProjectCreate />} />
           <Route path='/projects/:id' element={<ProjectDetail />} />
           <Route path='/projects/:id/applications' element={<ApplicationManagement />} />
           <Route path='/workspace' element={<UserWorkspace />} />

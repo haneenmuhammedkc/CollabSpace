@@ -7,14 +7,13 @@ const roleSchema = new mongoose.Schema(
     count: { type: Number, default: 1, min: 1 },
     filled: { type: Number, default: 0 },
   },
-  { _id: false }
 );
 
 const memberSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
     role: String,
     joinedAt: {
@@ -22,14 +21,13 @@ const memberSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { _id: false }
 );
 
 const applicationSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
     },
     role: String,
     message: String,
@@ -43,7 +41,6 @@ const applicationSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { _id: false }
 );
 
 const projectSchema = new mongoose.Schema(
@@ -53,7 +50,7 @@ const projectSchema = new mongoose.Schema(
 
     creator: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+      ref: "User",
       required: true,
     },
 
