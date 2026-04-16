@@ -27,6 +27,10 @@ const notificationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: "Comment" 
   },
+  community: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Community" 
+  },
 
   message: String,
 

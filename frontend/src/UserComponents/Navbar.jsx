@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import NotificationBell from "./NotificationBell";
 
 const NavLink = ({ href, children, mobile = false, setMobileMenuOpen }) => {
   const [isActive, setIsActive] = useState(false);
@@ -76,6 +77,7 @@ export default function Navbar() {
 
           {/* Desktop Auth Section */}
           <div className="hidden lg:flex items-center justify-end gap-5 sm:gap-8 w-1/4">
+          <NotificationBell />
             {user ? (
               <a
                 href={`/profile/${user._id}`}

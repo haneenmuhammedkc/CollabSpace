@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connectSocket } from './socket'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Landing from './User/Landing'
 import Community from './User/Community'
@@ -31,6 +32,11 @@ import AdminNotifications from './Admin/AdminNotifications'
 import AdminSettings from './Admin/AdminSettings'
 
 const App = () => {
+
+  useEffect(() => {
+    connectSocket()
+  }, [])
+
   return (
     <div>
       <BrowserRouter>
