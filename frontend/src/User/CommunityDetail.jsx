@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../UserComponents/Navbar";
 import Footer from "../UserComponents/Footer";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import PostBox from "../UserComponents/PostBox";
-import socket from "../socket";
+import PostBox from "../UserComponents/PostBox"
+import socket from "../socket"
+import ChatBox from "../UserComponents/ChatBox"
 
 const CommunityDetail = () => {
-  const { id } = useParams();
+  const inputRef = useRef()
+  const { id } = useParams()
+  const location = useLocation()
+  const highlightCommentId = location.state?.commentId
+  const targetPostId = location.state?.postId
 
-  const [image, setImage] = useState("");
-  const [link, setLink] = useState("");
-  const [code, setCode] = useState("");
-  const [notifications, setNotifications] = useState([])
-  const [unreadCount, setUnreadCount] = useState(0)
+  const [image, setImage] = useState("")
+  const [link, setLink] = useState("")
+  const [code, setCode] = useState("")
   const [posts, setPosts] = useState([]);
   const [community, setCommunity] = useState(null);
   const [activeTab, setActiveTab] = useState("feed");
   const [comments, setComments] = useState({});
+  const [chatId, setChatId] = useState(null)
   const [commentText, setCommentText] = useState({});
   const [postContent, setPostContent] = useState("");
   const [activeCommentPost, setActiveCommentPost] = useState(null);
@@ -126,7 +130,9 @@ const CommunityDetail = () => {
       },
     );
 
-    setPosts(posts.map((p) => (p._id === postId ? res.data : p)));
+    setPosts(prev =>
+  prev.map(p => (p._id === postId ? res.data : p))
+)
   };
 
   const handleDelete = async (postId) => {
@@ -137,21 +143,7 @@ const CommunityDetail = () => {
     });
 
     setPosts(posts.filter((p) => p._id !== postId));
-  };
-
-  const fetchNotifications = async () => {
-    const token = localStorage.getItem("token")
-
-    const res = await axios.get("http://localhost:5000/notifications", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-
-    setNotifications(res.data)
   }
-
-  useEffect(() => {
-    fetchNotifications()
-  }, [])
 
   const fetchComments = async (postId) => {
     try {
@@ -181,11 +173,6 @@ const CommunityDetail = () => {
         },
       );
 
-      setComments((prev) => ({
-        ...prev,
-        [postId]: [res.data, ...(prev[postId] || [])],
-      }));
-
       setCommentText((prev) => ({
         ...prev,
         [postId]: "",
@@ -194,17 +181,6 @@ const CommunityDetail = () => {
       console.log(err);
     }
   }
-
-  useEffect(() => {
-    const handleNotification = (data) => {
-      setNotifications(prev => [data, ...prev])
-      setUnreadCount(prev => prev + 1)
-    }
-
-    socket.on("new_notification", handleNotification)
-
-    return () => socket.off("new_notification", handleNotification)
-  }, [])
 
   useEffect(() => {
     const handleNewComment = (comment) => {
@@ -223,18 +199,115 @@ const CommunityDetail = () => {
   }, [])
 
   useEffect(() => {
-    const handleConnect = () => {
-      if (user?._id) {
-        socket.emit("join", user._id)
+    const handleUpdateCommentCount = ({ postId, commentsCount }) => {
+      setPosts(prev =>
+        prev.map(post =>
+          post._id === postId
+            ? { ...post, commentsCount }
+            : post
+        )
+      )
+    }
+
+    socket.on("update_comment_count", handleUpdateCommentCount)
+
+    return () => socket.off("update_comment_count", handleUpdateCommentCount)
+  }, [])
+
+  useEffect(() => {
+    if (targetPostId && posts.length > 0) {
+      setActiveCommentPost(targetPostId)
+
+      setTimeout(() => {
+        fetchComments(targetPostId)
+      }, 300)
+    }
+  }, [targetPostId, posts])
+
+  useEffect(() => {
+    if (highlightCommentId && comments[targetPostId]) {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(highlightCommentId)
+
+        if (el) {
+          el.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          })
+
+          // ✨ Highlight comment
+          el.classList.add("comment-highlight")
+
+          setTimeout(() => {
+            el.classList.remove("comment-highlight")
+          }, 2500)
+        }
+      }, 700)
+
+      return () => clearTimeout(timer)
+    }
+  }, [comments, targetPostId])
+
+  useEffect(() => {
+    if (targetPostId) {
+      const postEl = document.getElementById(`post-${targetPostId}`)
+
+      if (postEl) {
+        postEl.classList.add("post-highlight")
+
+        setTimeout(() => {
+          postEl.classList.remove("post-highlight")
+        }, 2000)
+      }
+    }
+  }, [targetPostId])
+
+  useEffect(() => {
+    if (highlightCommentId && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [highlightCommentId])
+
+  useEffect(() => {
+    const getChat = async () => {
+      try {
+        const token = localStorage.getItem("token")
+
+        const res = await axios.post(
+          "http://localhost:5000/chat/get-or-create",
+          {
+            contextType: "community",
+            contextId: id,
+          },
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        )
+
+        setChatId(res.data._id)
+      } catch (err) {
+        console.log(err)
       }
     }
 
-    socket.on("connect", handleConnect)
+    if (id) getChat()
+  }, [id])
 
-    return () => {
-      socket.off("connect", handleConnect)
-    }
-  }, [user])
+  useEffect(() => {
+  const handleLikeUpdate = ({ postId, likes }) => {
+    setPosts(prev =>
+      prev.map(post =>
+        post._id === postId
+          ? { ...post, likes }
+          : post
+      )
+    )
+  }
+
+  socket.on("update_like", handleLikeUpdate)
+
+  return () => socket.off("update_like", handleLikeUpdate)
+}, [])
 
   if (!community) {
     return <div className="text-center py-20">Loading...</div>;
@@ -337,6 +410,16 @@ const CommunityDetail = () => {
             >
               Members Directory
             </button>
+            <button
+              onClick={() => setActiveTab("chat")}
+              className={`py-5 font-bold text-base whitespace-nowrap border-b-4
+              ${activeTab === "chat"
+                ? "border-[#89A8B2] text-[#89A8B2]"
+                : "border-transparent text-slate-500 hover:text-slate-700"}
+              transition-colors duration-300`}
+            >
+              Community Chat
+            </button>
           </div>
         </div>
 
@@ -366,6 +449,7 @@ const CommunityDetail = () => {
                 {posts.map((post) => (
                   <div
                     key={post._id}
+                    id={`post-${post._id}`}
                     className="bg-[#E5E1DA] p-6 rounded-3xl border border-[#B3C8CF]/30 shadow-sm hover:border-[#89A8B2] transition duration-300"
                   >
                     <div className="flex items-center gap-4 mb-4">
@@ -438,7 +522,7 @@ const CommunityDetail = () => {
                         className="flex items-center gap-2 text-slate-500 hover:text-[#89A8B2] font-semibold text-sm transition cursor-pointer"
                       >
                         💬{" "}
-                        {comments[post._id]?.length ?? post.commentsCount ?? 0}
+                        {post.commentsCount || 0}
                       </button>
 
                       {/* DELETE */}
@@ -464,6 +548,7 @@ const CommunityDetail = () => {
                           </div>
 
                           <input
+                            ref={inputRef}
                             type="text"
                             placeholder="Write a comment..."
                             value={commentText[post._id] || ""}
@@ -504,6 +589,7 @@ const CommunityDetail = () => {
                         <div className="mt-4 space-y-3">
                           {comments[post._id]?.map((c) => (
                             <div
+                              id={c._id}
                               key={c._id}
                               className="flex gap-3 items-start bg-[#F1F0E8] p-3 rounded-xl border border-[#B3C8CF]/20"
                             >
@@ -564,6 +650,10 @@ const CommunityDetail = () => {
                   ))}
                 </div>
               </div>
+            )}
+
+            {activeTab === "chat" && chatId && (
+              <ChatBox chatId={chatId} />
             )}
           </div>
 

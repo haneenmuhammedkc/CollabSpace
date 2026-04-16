@@ -1,6 +1,7 @@
 import postModel from "../models/Post.js"
 import notificationModel from "../models/Notification.js"
 import commentModel from "../models/Comment.js"
+import { io } from "../index.js"
 
 export const getPostsByCommunity = async (req, res) => {
   try {
@@ -49,7 +50,9 @@ export const toggleLikePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" })
     }
 
-    const alreadyLiked = post.likes.includes(req.user._id)
+    const alreadyLiked = post.likes.some(
+  (id) => id.toString() === req.user._id.toString()
+)
     if(alreadyLiked){
       post.likes = post.likes.filter(
         (id) => id.toString() !== req.user._id.toString()
@@ -58,14 +61,22 @@ export const toggleLikePost = async (req, res) => {
     else{
       post.likes.push(req.user._id)
     }
-    if (!alreadyLiked) {
-      await notificationModel.create({
-        user: post.author,
-        message: "Someone liked your post"
-      })
-    }
+    if (!alreadyLiked && post.author.toString() !== req.user._id.toString()) {
+  await notificationModel.create({
+    recipient: post.author,
+    sender: req.user._id,
+    type: "like",
+    post: post._id,
+    message: "Someone liked your post"
+  })
+}
 
     await post.save()
+
+    io.emit("update_like", {
+  postId: post._id,
+  likes: post.likes
+})
 
     const updatedPost = await postModel.findById(post._id)
     .populate("author", "name avatar role about")

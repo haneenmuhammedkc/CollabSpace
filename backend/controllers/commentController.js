@@ -16,29 +16,45 @@ export const addComment = async (req, res) => {
     const populatedComment = await newComment.populate("author", "name");
 
     // 🔥 REAL-TIME COMMENT
-    io.emit("new_comment", populatedComment);
+    io.emit("new_comment", populatedComment)
 
-    io.emit("test_event", { message: "hello" });
+    // ✅ SEND REAL COMMENT COUNT
+    const comments = await commentModel.find({ post: postId })
+
+    io.emit("update_comment_count", {
+      postId,
+      commentsCount: comments.length
+    })
 
     // 2️⃣ Get post to find owner
     const post = await postModel.findById(postId);
 
     // 3️⃣ Avoid notifying yourself
-    if (post.author.toString() !== req.user._id.toString()) {
+    if(post.author.toString() !== req.user._id.toString()){
+      // Get sender details
+      const senderUser = await commentModel
+        .findById(newComment._id)
+        .populate("author", "name")
+
       const notification = await notificationModel.create({
         recipient: post.author,
         sender: req.user._id,
         type: "comment",
         post: post._id,
-        message: "commented on your post",
-      });
+        community: post.community, 
+        comment: newComment._id,
+        message: `${senderUser.author.name} commented on your post`,
+      })
 
-      // 4️⃣ 🔥 Real-time emit
-      const recipientId = post.author._id
-        ? post.author._id.toString()
-        : post.author.toString();
+      // 🔥 IMPORTANT: populate sender before emitting
+      const populatedNotification = await notification.populate(
+        "sender",
+        "name avatar"
+      )
 
-      io.to(recipientId).emit("new_notification", notification);
+      const recipientId = post.author.toString()
+
+      io.to(recipientId).emit("new_notification", populatedNotification)
     }
 
     res.status(201).json(newComment);

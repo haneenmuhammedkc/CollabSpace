@@ -4,10 +4,10 @@ import notificationModel from "../models/Notification.js"
 export const getNotifications = async (req, res) => {
   try {
     const notifications = await notificationModel
-      .find({ recipient: req.user.id })
+      .find({ recipient: req.user._id })
       .populate("sender", "name avatar")
-      .populate("post", "_id")
-      .populate("comment", "_id")
+      .populate("post", "_id community")
+.populate("comment", "_id")
       .sort({ createdAt: -1 })
 
     res.status(200).json(notifications)
@@ -21,7 +21,7 @@ export const getNotifications = async (req, res) => {
 export const getUnreadCount = async (req, res) => {
   try {
     const count = await notificationModel.countDocuments({
-      recipient: req.user.id,
+      recipient: req.user._id,
       read: false
     })
 
@@ -52,7 +52,7 @@ export const markAsRead = async (req, res) => {
 export const markAllAsRead = async (req, res) => {
   try {
     await notificationModel.updateMany(
-      { recipient: req.user.id, read: false },
+      { recipient: req.user._id, read: false },
       { read: true }
     )
 
